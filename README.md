@@ -1,3 +1,3 @@
-Practices when reading <Java Concurrency in Practice>.
-阅读<Java Concurrency in Practice>的练习。
+Practices when reading Java Concurrency in Practice.
+阅读Java Concurrency in Practice的练习。
 =
