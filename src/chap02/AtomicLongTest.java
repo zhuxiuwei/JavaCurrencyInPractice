@@ -5,9 +5,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import base.IBase;
 import base.TestExecutor;
 /**
- * 
  * @author xiuzhu
- *
+ * p16
  */
 public class AtomicLongTest implements IBase{
 
