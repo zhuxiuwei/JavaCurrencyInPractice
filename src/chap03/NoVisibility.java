@@ -5,7 +5,7 @@ package chap03;
  */
 public class NoVisibility {
 	private static boolean ready;
-	private static int number;
+	private static int number; 
 	private static class ReadThread extends Thread{
 		public void run(){
 			while(!ready)
