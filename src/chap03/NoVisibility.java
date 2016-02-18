@@ -15,8 +15,9 @@ public class NoVisibility {
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
+			    System.out.println(System.getProperty("java.runtime.version"));
 		new ReadThread().start();
-		Thread.sleep(1000);
+//		Thread.sleep(1000);
 		number = 42;
 		ready = true;
 	}
