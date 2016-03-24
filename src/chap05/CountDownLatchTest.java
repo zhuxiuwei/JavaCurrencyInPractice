@@ -12,6 +12,8 @@ import java.util.concurrent.Executors;
 public class CountDownLatchTest {
 
 	public long calRunTimeOfNThreads(int threadCount){
+		
+		//master threads holds the CountDownLatch.
 		final CountDownLatch startGate = new CountDownLatch(1);
 		final CountDownLatch exitGate = new CountDownLatch(threadCount);
 		
@@ -44,15 +46,22 @@ public class CountDownLatchTest {
 			Thread t = new Thread() {
 				public void run() {
 					try {
-						startGate.await();
+						startGate.await();	//wait before master thread says "GO!"
 						new RunTask().run();
-						exitGate.countDown();
+						exitGate.countDown();	//Tell master thread this runnable is done.
 					} catch (InterruptedException ignored) { }
 				}
 			};
 			t.start();
 		}
 		
+		System.out.println("Master: 'On your mark!'");
+		try {
+			Thread.sleep(2000);	//All runnable will be waiting for go
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println("Master: 'GO!'");
 		startGate.countDown();
 		long startTime = System.currentTimeMillis();
 		try {
@@ -66,7 +75,7 @@ public class CountDownLatchTest {
 	
 	public static void main(String[] args) {
 		CountDownLatchTest latch = new CountDownLatchTest();
-		System.out.println("All tasks took: " + latch.calRunTimeOfNThreads(5));
+		System.out.println("Master: 'All tasks took: " + latch.calRunTimeOfNThreads(5) + " ms to finish'");
 	}
 
 }
@@ -82,6 +91,7 @@ class RunTask implements Runnable{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Thread " + Thread.currentThread().getName() + " job done!");
 	}
 	
 }
