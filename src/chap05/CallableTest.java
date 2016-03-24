@@ -18,9 +18,15 @@ import java.util.concurrent.TimeUnit;
  */
 class myCallableTask implements Callable<String> {
 	@Override
-	public String call() throws Exception {
-		TimeUnit.MILLISECONDS.sleep(1);
-		return "哈哈！";
+	public String call() {
+		try {
+			TimeUnit.MILLISECONDS.sleep(10);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			System.out.println("我的执行被打断了！is interrupted: " + Thread.interrupted());
+		}
+		System.out.println("我执行完了!");
+		return "这是返回结果！";
 	}
 }
 
@@ -30,9 +36,12 @@ public class CallableTest {
 		Future<String> future = exec.submit(new myCallableTask());
 		while (!future.isDone()) {
 			System.out.println("task还没有执行完成....");
+			//future.cancel(true);		//！！！可以把这个注释去电看看效果！！！ true和false效果也不一样。
 		}
 		try {
-			String res = future.get();
+			System.out.println("isCancelled: " + future.isCancelled());
+			System.out.println("isDone: " + future.isDone());
+			String res = future.get();	//如果future被cancel，调用这个的话，会抛异常： java.util.concurrent.CancellationException
 			System.out.println(res);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -44,12 +53,14 @@ public class CallableTest {
 }
 
 // 输出：
-// task还没有执行完成....
-// task还没有执行完成....
-// task还没有执行完成....
-// task还没有执行完成....
-// task还没有执行完成....
-// task还没有执行完成....
-// task还没有执行完成....
-// task还没有执行完成....
-// 哈哈！
+//task还没有执行完成....
+//task还没有执行完成....
+//task还没有执行完成....
+//task还没有执行完成....
+//task还没有执行完成....
+//task还没有执行完成....
+//我执行完了!
+//task还没有执行完成....
+//isCancelled: false
+//isDone: true
+//这是返回结果！
