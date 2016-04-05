@@ -20,9 +20,9 @@ public class SemaphoreSet<T> {
 	}
 	
 	public boolean add(T obj) throws InterruptedException{
+		sem.acquire();
 		boolean wasAdded = false;
 		try{
-			sem.acquire();
 			wasAdded = set.add(obj);
 		}finally{
 			if(!wasAdded)
@@ -32,13 +32,9 @@ public class SemaphoreSet<T> {
 	}
 	
 	public boolean remove(T obj){
-		boolean wasRemoved = false;
-		try{
-			wasRemoved = set.remove(obj);
-		}finally{
-			if(wasRemoved)
-				sem.release();
-		}
+		boolean wasRemoved = set.remove(obj);
+		if(wasRemoved)
+			sem.release();
 		return wasRemoved;
 	}
 	

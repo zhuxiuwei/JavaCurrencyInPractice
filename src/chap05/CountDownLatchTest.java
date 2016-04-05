@@ -57,7 +57,7 @@ public class CountDownLatchTest {
 		
 		System.out.println("Master: 'On your mark!'");
 		try {
-			Thread.sleep(2000);	//All runnable has to wait for master thread's 'go' command
+			Thread.sleep(2000);	//All runnable has to wait for master thread's 'go' command. The 'go' command is an event.
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
