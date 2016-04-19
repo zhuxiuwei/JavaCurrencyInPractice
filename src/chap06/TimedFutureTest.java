@@ -49,6 +49,9 @@ public class TimedFutureTest {
 		}
 		
 		System.out.println(ad.name);
+		
+		//shut down Executor service to quit JVM
+		es.shutdown();
 	}
 		
 	public static void main(String[] args) {

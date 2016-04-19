@@ -53,6 +53,9 @@ public class FutureRender {
 			e.printStackTrace();
 		}
 		System.out.println("main done!");
+		
+		//shut down Executor service to quit JVM
+		exs.shutdown();
 	}
 	
 	//render text
