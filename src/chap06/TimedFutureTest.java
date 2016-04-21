@@ -44,10 +44,15 @@ public class TimedFutureTest {
 			e.printStackTrace();
 		} catch (TimeoutException e) {
 			System.out.println("300ms Time out. Will cancel task and dispaly defalt Ads.");
-			f.cancel(true);
+			System.out.println(f.isCancelled());
+			System.out.println(f.isDone());
+			//f.cancel(true);
 			ad = new Ad("DEFAULT AD");	//The code in !!!Note!!! does not work so got to add this line.
+		}finally{
+			f.cancel(false);	//160422：把cancel放到finally里。模仿p147 7.10.对于正常完成的task，这是harmless的。
 		}
-		
+		System.out.println(f.isCancelled());	//160422：如果Task正常complete，这里会显示false！
+		System.out.println(f.isDone());
 		System.out.println(ad.name);
 		
 		//shut down Executor service to quit JVM
