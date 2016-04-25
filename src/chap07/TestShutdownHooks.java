@@ -11,10 +11,10 @@ public class TestShutdownHooks implements Runnable{
 	private AwsClient client = new AwsClient();
 	
 	public TestShutdownHooks(){
-		//add ShutdownHook
+		//!!!!!!!!!!!add ShutdownHook!!!!!!!!!!!!!!!!!!!
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 			public void run(){
-				TestShutdownHooks.this.client.flush.quit();
+				client.close();
 			}
 		});
 	}
@@ -40,7 +40,7 @@ public class TestShutdownHooks implements Runnable{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.exit(0);	//!!!!This will shutdown JVM, then trigger ShutdownHook.
+		System.exit(0);	//!!!!This will shutdown JVM, then trigger ShutdownHook.!!!!!!!!!!!!
 	}
 }
 
@@ -56,7 +56,7 @@ class AwsClient
 		System.out.println("AwsClient send..");
 	}
 	public void close(){	//cancel auto flush
-		flush.cancel();
+		flush.quit();
 		flush = null;
 	}
 }
