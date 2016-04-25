@@ -20,6 +20,10 @@ public class BlockingQueueCancelTest implements Runnable{
 		} catch (InterruptedException e) {
 			System.out.println("put method interrupted!");
 			System.out.println(Thread.currentThread().isInterrupted()); //返回false，原因：http://zhidao.baidu.com/link?url=flhV6VuxUNY6ulkiYFG-RVdqvSncai07sASV8cYETcXBgWlbWQ-rLwkJSJN-zvshTkbLq3GNx6iRHF723Zm3D9hbkfpGA8altQeRJNLsE9G
+			
+			//160425 可以通过以下方式，给interrupt状态置位。 （即书上的Restore the interrupt. P93）
+			Thread.currentThread().interrupt();
+			System.out.println(Thread.currentThread().isInterrupted());
 		}
 	}
 	
@@ -35,5 +39,6 @@ public class BlockingQueueCancelTest implements Runnable{
 		System.out.println(bqct.queue);
 		
 		bqct.cancel(t);
+		System.out.println(t.isInterrupted());
 	}
 }
