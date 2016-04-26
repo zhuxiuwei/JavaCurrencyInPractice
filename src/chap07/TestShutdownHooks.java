@@ -42,9 +42,9 @@ public class TestShutdownHooks implements Runnable{
 			e.printStackTrace();
 		}
 		//System.exit(0);	//!!!!This will shutdown JVM, then trigger ShutdownHook.!!!!!!!!!!!!
-		t.interrupt();	////!!!!This can also shutdown JVM, as AutoFlush is a daemon thread. then trigger ShutdownHook!!!!!!!!!!!!
 		
 		System.out.println("\r\n******* Test isInterrupted again! *******");
+		t.interrupt();	////!!!!This can also shutdown JVM, as AutoFlush is a daemon thread. then trigger ShutdownHook!!!!!!!!!!!!
 		/**测试isInterrupted为啥总返回false。这个帖子一句话提醒了我："@rAy except your thread immediately dies. – Peter Lawrey Dec 19 '13 at 9:47" http://stackoverflow.com/questions/20677604/thread-isinterrupted-always-returns-false 
 		        所以，在Thread isAlive的时候，isInterrupted能正确返回true。但是Thread dies后，看起来interrupt flag又被reset了。 */
 		boolean isInterrupt = t.isInterrupted();
