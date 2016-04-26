@@ -21,12 +21,13 @@ public class TestShutdownHooks implements Runnable{
 	
 	@Override
 	public void run() {
-		while(true){
+		while(!Thread.currentThread().isInterrupted()){		//responsive to interrupt
 			client.send();
 			try {
 				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
+			} catch (InterruptedException e) {	//responsive to interrupt
+				System.out.println("AwsClient Interrupt!");
+				Thread.currentThread().interrupt();		//restore interruption state
 			}
 		}
 	}
@@ -40,7 +41,8 @@ public class TestShutdownHooks implements Runnable{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.exit(0);	//!!!!This will shutdown JVM, then trigger ShutdownHook.!!!!!!!!!!!!
+		//System.exit(0);	//!!!!This will shutdown JVM, then trigger ShutdownHook.!!!!!!!!!!!!
+		t.interrupt();	////!!!!This can also shutdown JVM, as AutoFlush is a daemon thread. then trigger ShutdownHook!!!!!!!!!!!!
 	}
 }
 
@@ -49,7 +51,7 @@ class AwsClient
 	public AutoFlush flush;
 	public AwsClient(){
 		flush = new AutoFlush();
-		new Timer("Flusher" + Thread.currentThread().getName() + System.currentTimeMillis(), true)
+		new Timer("Flusher" + Thread.currentThread().getName() + System.currentTimeMillis(), true)	//'true' means AutoFlush runs as daemon thread.
 			.schedule(flush, 1000, 1000);
 	}
 	public void send() {
