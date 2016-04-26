@@ -28,6 +28,7 @@ public class TestShutdownHooks implements Runnable{
 			} catch (InterruptedException e) {	//responsive to interrupt
 				System.out.println("TestShutdownHooks Interrupted!");
 				Thread.currentThread().interrupt();		//restore interruption state
+				/** 因为置位后，这个Thread就die了，所以在职位后的一瞬间isInterrupt还能返回true，但很快会接着返回false。  */
 			}
 		}
 	}
@@ -52,7 +53,7 @@ public class TestShutdownHooks implements Runnable{
 		/** 因为在interrupt()后的第一时间保存好isAlive和isInterrupt，此时在极短的瞬间t还是alive的，所以返回true true */
 		System.out.println("isInterrupt: " + isInterrupt + ", isAlive: " + isAlive);	//true true
 		/** 貌似调用System.out.println会耗费一些时间，此时Thread已经die了，所以打印false false */
-		Thread.sleep(5);
+		Thread.sleep(5);	//wait 5 mills to make sure thread t totally dies.
 		System.out.println("isInterrupt: " + t.isInterrupted() + ", isAlive: " + t.isAlive());	//false false
 	}
 }
